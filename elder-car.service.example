@@ -1,0 +1,26 @@
+[Unit]
+Description=Elder Car Monitoring Dashboard (Flask/Waitress)
+After=network.target
+
+[Service]
+Type=simple
+User=junxuanchen
+Group=junxuanchen
+WorkingDirectory=/home/junxuanchen/elder_car
+Environment=PATH=/home/junxuanchen/elder_car/.venv/bin:/usr/bin
+# Serial GPS access requires /dev/serial0; GPIO and camera access commonly require the gpio and video groups. Keep dialout enabled.
+SupplementaryGroups=dialout gpio video
+#
+# Telegram (can run alongside Twilio; never commit tokens to Git):
+# Environment=TELEGRAM_BOT_TOKEN=your_bot_token
+# Environment=TELEGRAM_CHAT_ID=your_chat_id
+#
+# If the red button triggers while idle and clears when pressed, its signal polarity is probably reversed:
+# Environment=RED_BUTTON_ACTIVE_HIGH=1
+#
+ExecStart=/home/junxuanchen/elder_car/.venv/bin/python /home/junxuanchen/elder_car/run.py
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

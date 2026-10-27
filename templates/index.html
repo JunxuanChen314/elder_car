@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Care Monitoring Dashboard · Elder Car</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20260412f" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="top">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>Care Monitoring Dashboard</h1>
+      <p class="sub">Real-time Flask telemetry · temperature and humidity refresh every second</p>
+    </div>
+    <div class="live">
+      <span class="pulse" id="liveDot"></span>
+      <span id="liveText">Connecting…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div class="cam-column">
+      <section class="card cam-card">
+        <div class="card-head">
+          <h2>Camera</h2>
+          <span class="tag" id="camTag">—</span>
+        </div>
+        <div class="cam-stack">
+          <div class="cam-wrap">
+            <div class="cam-frame-inner">
+              <img id="cam" src="{{ url_for('video_feed') }}" alt="Live camera feed" />
+            </div>
+          </div>
+          <div class="cam-servo-panel servo-card" id="servoCard">
+            <div class="cam-servo-banner">Pan-Tilt Servo Controls</div>
+            <div class="cam-servo-head">
+              <strong class="cam-servo-title">Pan / Tilt</strong>
+              <span class="tag" id="servoTag">Enabled</span>
+            </div>
+            <div class="servo-row">
+              <span class="label">Pan</span>
+              <button type="button" class="btn-servo" id="servoBaseLeft" title="Pan one step left">◀</button>
+              <select id="servoBaseSel" aria-label="Horizontal angle from 0 to 180 degrees"></select>
+              <button type="button" class="btn-servo" id="servoBaseRight" title="Pan one step right">▶</button>
+            </div>
+            <div class="servo-row">
+              <span class="label">Tilt</span>
+              <button type="button" class="btn-servo" id="servoTopDown" title="Tilt one step down">↓</button>
+              <select id="servoTopSel" aria-label="Tilt angle from 0 to 180 degrees"></select>
+              <button type="button" class="btn-servo" id="servoTopUp" title="Tilt one step up">↑</button>
+            </div>
+          </div>
+        </div>
+        <p class="hint" id="camHint"></p>
+      </section>
+    </div>
+
+    <section class="side">
+      <div class="card metrics">
+        <div class="card-head"><h2>Environment</h2></div>
+        <div class="metric-row">
+          <div class="metric">
+            <span class="label">Ambient Temperature (DHT)</span>
+            <strong id="temp">—</strong>
+            <span class="unit">°C</span>
+          </div>
+          <div class="metric">
+            <span class="label">Humidity (DHT)</span>
+            <strong id="hum">—</strong>
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <div class="metric-row metric-row--board">
+          <div class="metric metric--board">
+            <span class="label">Board Temperature (Raspberry Pi SoC, not ambient)</span>
+            <strong id="boardTemp">—</strong>
+            <span class="unit">°C</span>
+          </div>
+        </div>
+        <p class="hint" id="dhtHint">Reading DHT sensor…</p>
+      </div>
+
+      <div class="card alerts">
+        <div class="card-head"><h2>Alerts &amp; Indicators</h2></div>
+        <div class="pill-row">
+          <div class="pill blue" id="pillBlue">
+            <span class="led"></span>
+            <span>Blue LED · Prolonged inactivity</span>
+          </div>
+          <div class="pill red" id="pillRed">
+            <span class="led"></span>
+            <span>Red LED · Emergency alert</span>
+          </div>
+        </div>
+        <div class="motion">
+          <span class="label">Motion Score</span>
+          <div class="bar"><i id="motionBar"></i></div>
+          <span class="val" id="motionVal">0</span>
+        </div>
+        <div class="ir-row">
+          <span class="label">Infrared Sensor</span>
+          <span id="irVal">—</span>
+        </div>
+      </div>
+
+      <div class="card gps-card">
+        <div class="card-head"><h2>GPS</h2></div>
+        <p class="gps" id="gps">Connecting to serial port…</p>
+        <div class="gps-map-wrap">
+          <iframe id="gpsMap" title="GPS map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <p class="hint" id="gpsLinks"></p>
+      </div>
+
+      <div class="card log-card">
+        <div class="card-head"><h2>Event Log</h2></div>
+        <ul class="log" id="log"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>The red button activates the emergency LED and, when BUZZER_GPIO is configured, the buzzer; press it again to clear the alert. The blue LED signals prolonged inactivity. Twilio can send SMS notifications.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}?v=20260412f"></script>
+</body>
+</html>

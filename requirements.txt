@@ -1,0 +1,9 @@
+Flask>=3.0.0
+python-dotenv>=1.0.0
+waitress>=3.0.0
+numpy>=1.24.0
+opencv-python-headless>=4.8.0
+twilio>=8.10.0
+pyserial>=3.5
+adafruit-circuitpython-dht>=4.0.0
+Adafruit-Blinka>=8.0.0

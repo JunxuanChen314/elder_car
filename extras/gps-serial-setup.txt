@@ -1,0 +1,14 @@
+Common issues when using GPS through /dev/serial0:
+
+1) Permission denied
+   - systemd: SupplementaryGroups=dialout gpio video (see elder-car.service.example)
+   - If /dev/ttyS0 is root:root with mode 600, copy extras/udev/99-elder-gps-serial.rules to /etc/udev/rules.d/ and run udevadm trigger.
+
+2) Serial-console conflict (already handled on the original device)
+   - serial-getty@ttyS0 exclusively claims the mini UART and must be disabled:
+     sudo systemctl mask --now serial-getty@ttyS0.service
+   - To keep a serial login console, connect the GPS through a USB serial adapter and set GPS_SERIAL=/dev/ttyUSB0.
+
+3) Restore the serial login console (normally unnecessary)
+   - sudo systemctl unmask serial-getty@ttyS0.service
+   - sudo systemctl start serial-getty@ttyS0.service

@@ -1,0 +1,4 @@
+# GPS commonly uses /dev/serial0 -> ttyS0. If the device is root:root with crw------- permissions, even the dialout group cannot open it.
+# Install: sudo cp this file to /etc/udev/rules.d/ && sudo udevadm control --reload-rules && sudo udevadm trigger
+SUBSYSTEM=="tty", KERNEL=="ttyS0", GROUP="dialout", MODE="0660"
+SUBSYSTEM=="tty", KERNEL=="ttyAMA0", GROUP="dialout", MODE="0660"
